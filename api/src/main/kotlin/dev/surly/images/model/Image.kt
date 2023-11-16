@@ -7,6 +7,6 @@ import java.util.*
 
 @Table("images")
 class Image(@Id val id: UUID,
-            @Column("user_id") val user_id: UUID,
+            @Column("user_id") val userId: UUID,
             @Column("path") val path: String,) {
 }

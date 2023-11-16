@@ -1,5 +1,5 @@
-drop table if exists users;
-drop table if exists images;
+drop table if exists images cascade;
+drop table if exists users cascade;
 
 CREATE TABLE IF NOT EXISTS users
 (

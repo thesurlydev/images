@@ -1,0 +1,22 @@
+### Health
+GET {{base_url}}/health
+
+### Users
+GET {{base_url}}/api/users
+
+### Images
+GET {{base_url}}/api/images
+
+
+### Upload image
+POST {{base_url}}/api/images/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="test1-360k.jpg"
+
+< ./etc/test-images/test1-360k.jpg
+--WebAppBoundary--
+
+###
+

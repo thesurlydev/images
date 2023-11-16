@@ -10,4 +10,5 @@ import java.util.*
 class ImageService(val imageRepository: ImageRepository) {
     suspend fun findById(id: UUID): Image? = imageRepository.findById(id)
     suspend fun findAll(): Flow<Image> = imageRepository.findAll()
+    suspend fun findByUser(uuid: UUID): Flow<Image> = imageRepository.findByUserId(uuid)
 }

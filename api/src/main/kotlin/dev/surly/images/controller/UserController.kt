@@ -14,7 +14,7 @@ import java.util.*
 class UserController(private val userService: UserService) {
 
     @GetMapping
-    suspend fun getUserById(): ResponseEntity<Flow<User>> {
+    suspend fun getAllUsers(): ResponseEntity<Flow<User>> {
         val users = userService.findAll()
         return ResponseEntity.ok(users)
     }
@@ -29,11 +29,11 @@ class UserController(private val userService: UserService) {
     /**
      * NOTE: Normally, we would use a @ControllerAdvice class to handle exceptions but this is a small app and probably overkill.
      */
-    @ExceptionHandler(
+    /*@ExceptionHandler(
         MethodArgumentTypeMismatchException::class,
         IllegalArgumentException::class
     )
-    fun handleValidationExceptions(ex: Throwable): ResponseStatusException {
+    suspend fun handleValidationExceptions(ex: Throwable): ResponseStatusException {
         return ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, ex.message, ex)
-    }
+    }*/
 }

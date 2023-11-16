@@ -6,10 +6,11 @@ A distributed async image processing service.
 
 ### Infrastructure
 
-* [ ] Multi-project skeleton.
+* [x] Multi-project skeleton.
 * [x] Setup Postgresql database.
-* [ ] Setup database migrations.
+* [x] Setup database migrations.
 * [ ] Setup messaging broker.
+* [ ] Setup minio or local file storage.
 
 ### API Server
 
@@ -23,7 +24,8 @@ A distributed async image processing service.
 
 ### Worker
 
-* [ ] Add worker skeleton.
+* [x] Add worker skeleton.
+* [ ] Add imgix image processing.
 
 ### Documentation
 
@@ -56,5 +58,5 @@ docker-compose up -d
 
 ## How to deploy
 
-
+TODO?
 

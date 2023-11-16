@@ -1,7 +1,7 @@
 package dev.surly.images.config
 
-import org.springframework.context.annotation.Configuration
+import org.springframework.boot.context.properties.ConfigurationProperties
+import java.nio.file.Path
 
-@Configuration
-class ImagesConfig {
-}
+@ConfigurationProperties(prefix = "images")
+data class ImagesConfig(val storagePath: Path)
