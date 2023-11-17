@@ -9,12 +9,12 @@ import java.util.*
 
 @Table("images")
 data class Image(
-    @Id val id: UUID,
+    @Id var id: UUID? = null,
     @Column("user_id") @JsonProperty("user_id") val userId: UUID,
-    @Column("path") val path: String,
-    @Column("status") val status: String = "processing",
-    @Column("type") val type: String,
+    val path: String,
+    val status: String = "processing",
+    val type: String,
     @Column("file_size") @JsonProperty("file_size") val fileSizeBytes: Long,
-    @Column("create_timestamp") @JsonProperty("created_at") var createdAt: OffsetDateTime
+    @Column("create_timestamp") @JsonProperty("created_at") var createdAt: OffsetDateTime? = null
 ) {
 }

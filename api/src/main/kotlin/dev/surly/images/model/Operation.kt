@@ -8,6 +8,6 @@ import java.util.*
 @Table("operations")
 data class Operation(
     @Id val id: UUID,
-    @Column("name") val name: String,
-    @Column("description") val description: String,
+    val name: String,
+    val description: String,
 )

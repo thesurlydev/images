@@ -10,15 +10,18 @@ GET {{base_url}}/api/images
 ### Image Operations
 GET {{base_url}}/api/operations
 
-### Upload image
+### Upload valid image
 POST {{base_url}}/api/images/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="test1-360k.jpg"
+Content-Disposition: form-data; name="file"; filename="test1-2016x1512-360k.jpg"
 
-< ./etc/test-images/test1-360k.jpg
+< ./etc/test-images/test1-2016x1512-360k.jpg
 --WebAppBoundary--
 
-###
+### Upload invalid image
+
+
+### Upload a non-image file
 
