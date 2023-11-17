@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class S3StorageService : StorageService {
 
     override suspend fun getType(): String = "s3"
-    override suspend fun saveImage(bytes: ByteArray): String {
+    override suspend fun saveImage(bytes: ByteArray, mimeType: String): String {
         TODO("Not yet implemented")
     }
 

@@ -17,14 +17,15 @@ class LocalStorageService(val storageConfig: StorageConfig) : StorageService {
     private val log = LoggerFactory.getLogger(LocalStorageService::class.java)
     override suspend fun getType(): String = "local"
 
-    override suspend fun saveImage(bytes: ByteArray, mimeSubtype: String): String {
+    override suspend fun saveImage(bytes: ByteArray, mimeType: String): String {
 
         // sanity check to make sure the target directory is created
         val dir = Path.of(storageConfig.path)
         dir.createDirectories()
 
         // create a unique file name to avoid collisions
-        val uniqueFileName = UUID.randomUUID().toString() + "." + mimeSubtype
+        val extension = mimeType.substringAfter("/")
+        val uniqueFileName = UUID.randomUUID().toString() + "." + extension
         val targetFilePath = dir.resolve(uniqueFileName)
 
         // save the file to the target directory

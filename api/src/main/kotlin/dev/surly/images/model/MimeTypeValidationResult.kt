@@ -1,3 +1,3 @@
 package dev.surly.images.model
 
-data class MimeTypeValidationResult(val mimeSubtype: String?, val isValid: Boolean)
+data class MimeTypeValidationResult(val mimeType: String?, val isValid: Boolean)

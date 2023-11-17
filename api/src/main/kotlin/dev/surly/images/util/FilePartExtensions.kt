@@ -33,19 +33,19 @@ object FilePartExtensions {
     }
 
     suspend fun FilePart.isValidMimeType(acceptedMimeTypes: Set<String>): MimeTypeValidationResult {
-        val mediaType = this.headers().contentType
-        mediaType?.let {
-            val type = it.type
-            val subType = it.subtype
-            if (type == "image" && acceptedMimeTypes.contains(subType)) {
-                return MimeTypeValidationResult(mediaType.toString(), true)
-            } else {
-                // let's try Tika
-                val tikaMediaType = getFileMimeTypeWithTika(this).awaitFirstOrNull()
-                if (tikaMediaType?.type == "image" && acceptedMimeTypes.contains(tikaMediaType.subtype)) {
-                    return MimeTypeValidationResult(tikaMediaType.toString(), true)
-                } else {
-                    return MimeTypeValidationResult(tikaMediaType.toString(), false)
+        val mimeType = this.headers().contentType
+        mimeType?.let {
+            val mimeTypeStr = it.toString()
+            when {
+                acceptedMimeTypes.contains(mimeTypeStr) -> return MimeTypeValidationResult(mimeTypeStr, true)
+                else -> {
+                    // let's try Tika
+                    val tikaMediaType = getFileMimeTypeWithTika(this).awaitFirstOrNull()
+                    val tikaMimeTypeStr = tikaMediaType.toString()
+                    when {
+                        acceptedMimeTypes.contains(tikaMimeTypeStr) -> return MimeTypeValidationResult(tikaMimeTypeStr, true)
+                        else -> return MimeTypeValidationResult(tikaMimeTypeStr, false)
+                    }
                 }
             }
         }

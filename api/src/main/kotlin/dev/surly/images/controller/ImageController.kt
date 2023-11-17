@@ -1,7 +1,7 @@
 package dev.surly.images.controller
 
 import dev.surly.images.config.ImageConfig
-import dev.surly.images.model.AcceptedImageTypes
+import dev.surly.images.model.AcceptedMimeTypes
 import dev.surly.images.model.Image
 import dev.surly.images.service.ImageService
 import dev.surly.images.service.StorageService
@@ -27,22 +27,22 @@ class ImageController(
     suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<String> {
 
         // verify that the file is an image
-        val mimeTypeValidationResult = filePart.isValidMimeType(imagesConfig.allowedMimeSubtypes)
-        val detectedMimeSubtype = mimeTypeValidationResult.mimeSubtype
+        val mimeTypeValidationResult = filePart.isValidMimeType(imagesConfig.allowedMimeTypes)
+        val detectedMimeType = mimeTypeValidationResult.mimeType
         if (!mimeTypeValidationResult.isValid) {
-            return ResponseEntity.badRequest().body("File is not an accepted type: $detectedMimeSubtype")
+            return ResponseEntity.badRequest().body("File is not an accepted type: $detectedMimeType")
         }
-        log.info("File is an accepted type: $detectedMimeSubtype")
+        log.info("File is an accepted type: $detectedMimeType")
 
         // TODO prevent very large files from being uploaded
 
         // save the file to the storage service
         val bytes = filePart.toByteArray()
-        val savedImageLocation = storageService.saveImage(bytes, detectedMimeSubtype!!)
+        val savedImageLocation = storageService.saveImage(bytes, detectedMimeType!!)
         log.info("Saved image location: $savedImageLocation")
 
-        // TODO capture actual user id after authentication is implemented
-//        val userId = UUID.fromString("1aeabbac-84a5-11ee-9c3b-37b635df60b6")
+        // FIXME capture actual user id after authentication is implemented
+        val userId = UUID.fromString("1aeabbac-84a5-11ee-9c3b-37b635df60b6")
 
         // save the image to the database
 //        val fileSize = bytes.size.toLong()
@@ -56,10 +56,10 @@ class ImageController(
         return ResponseEntity.ok("File uploaded successfully")
     }
 
-    @GetMapping("/accepted-types")
-    suspend fun getAcceptedImageTypes(): ResponseEntity<AcceptedImageTypes> {
-        val acceptedTypeStr = imagesConfig.allowedMimeSubtypes
-        val acceptedTypes = AcceptedImageTypes(acceptedTypeStr)
+    @GetMapping("/accepted")
+    suspend fun getAcceptedImageTypes(): ResponseEntity<AcceptedMimeTypes> {
+        val allowedMimeTypes = imagesConfig.allowedMimeTypes
+        val acceptedTypes = AcceptedMimeTypes(allowedMimeTypes)
         return ResponseEntity.ok(acceptedTypes)
     }
 
@@ -78,15 +78,4 @@ class ImageController(
         return if (image != null) ResponseEntity.ok(image)
         else ResponseEntity.notFound().build()
     }
-
-    /**
-     * NOTE: Normally, we would use a @ControllerAdvice class to handle exceptions but this is a small app and probably overkill.
-     */
-    /* @ExceptionHandler(
-         MethodArgumentTypeMismatchException::class,
-         IllegalArgumentException::class
-     )
-     suspend fun handleValidationExceptions(ex: Throwable): ResponseStatusException {
-         return ResponseStatusException(HttpStatus.BAD_REQUEST, ex.message, ex)
-     }*/
 }

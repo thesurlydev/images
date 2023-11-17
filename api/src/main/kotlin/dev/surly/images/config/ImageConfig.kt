@@ -4,5 +4,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "images")
 data class ImageConfig(
-    val allowedMimeSubtypes: Set<String>
+    val allowedMimeTypes: Set<String>
 )
