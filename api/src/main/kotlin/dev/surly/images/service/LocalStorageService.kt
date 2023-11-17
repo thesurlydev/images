@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.nio.file.Path
 import java.util.*
-import kotlin.io.path.absolutePathString
 import kotlin.io.path.createDirectories
 
 @Service
@@ -32,7 +31,7 @@ class LocalStorageService(val storageConfig: StorageConfig) : StorageService {
         log.info("Saving file to: $targetFilePath")
         targetFilePath.toFile().writeBytes(bytes)
 
-        return targetFilePath.absolutePathString()
+        return uniqueFileName
     }
 
     override suspend fun loadImage(location: String): ByteArray {

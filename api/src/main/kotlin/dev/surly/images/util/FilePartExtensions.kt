@@ -16,10 +16,10 @@ object FilePartExtensions {
     /**
      * Convert a FilePart to an Image object.
      */
-    fun FilePart.toImage(userId: UUID, path: String, size: Long): Image = Image(
+    fun FilePart.toImage(userId: UUID, path: String, size: Long, type: String): Image = Image(
         userId = userId,
         path = path,
-        type = this.headers().contentType.toString(),
+        type = type,
         fileSizeBytes = size,
         status = "processing",
     )
