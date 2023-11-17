@@ -7,6 +7,8 @@ GET {{base_url}}/api/users
 ### Images
 GET {{base_url}}/api/images
 
+### Image Operations
+GET {{base_url}}/api/operations
 
 ### Upload image
 POST {{base_url}}/api/images/upload

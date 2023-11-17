@@ -33,6 +33,8 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework:spring-jdbc")
 
+	implementation("io.nats:jnats:2.17.1")
+
 //	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.postgresql:r2dbc-postgresql")
 //	runtimeOnly("com.h2database:h2")

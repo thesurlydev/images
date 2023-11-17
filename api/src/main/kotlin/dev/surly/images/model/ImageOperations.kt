@@ -1,20 +1,18 @@
 package dev.surly.images.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
 import java.time.OffsetDateTime
 import java.util.*
 
-@Table("images")
-data class Image(
+@Table("image_operations")
+data class ImageOperations(
     @Id val id: UUID,
-    @Column("user_id") @JsonProperty("user_id") val userId: UUID,
+    @Column("image_id") val imageId: UUID,
+    @Column("operation_id") val operationId: UUID,
+    @Column("parameters") val parameters: String,
     @Column("path") val path: String,
     @Column("status") val status: String = "processing",
-    @Column("type") val type: String,
-    @Column("file_size") @JsonProperty("file_size") val fileSizeBytes: Long,
-    @Column("create_timestamp") @JsonProperty("created_at") var createdAt: OffsetDateTime
-) {
+    @Column("create_timestamp") val created: OffsetDateTime? = null) {
 }
