@@ -1,9 +1,8 @@
 package dev.surly.images.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import java.nio.file.Path
 
 @ConfigurationProperties(prefix = "images")
 data class ImageConfig(
-    val allowedTypes: Set<String>
+    val allowedMimeSubtypes: Set<String>
 )

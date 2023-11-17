@@ -5,7 +5,7 @@ import dev.surly.images.model.AcceptedImageTypes
 import dev.surly.images.model.Image
 import dev.surly.images.service.ImageService
 import dev.surly.images.service.StorageService
-import dev.surly.images.util.FilePartExtensions.isValidMediaType
+import dev.surly.images.util.FilePartExtensions.isValidMimeType
 import dev.surly.images.util.FilePartExtensions.toByteArray
 import kotlinx.coroutines.flow.Flow
 import org.slf4j.LoggerFactory
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import dev.surly.images.util.FilePartExtensions.toImage;
 
 @RestController
 @RequestMapping("/api/images")
@@ -28,25 +27,22 @@ class ImageController(
     suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<String> {
 
         // verify that the file is an image
-        // TODO using content type header is not reliable. Need to also use Tika to verify the file type
-        val mediaTypeValidationResult = filePart.isValidMediaType(imagesConfig.allowedTypes)
-        if (!mediaTypeValidationResult.isValid) {
-            return ResponseEntity.badRequest().body("File is not an accepted type: ${mediaTypeValidationResult.mediaType?.toString()}")
+        val mimeTypeValidationResult = filePart.isValidMimeType(imagesConfig.allowedMimeSubtypes)
+        val detectedMimeSubtype = mimeTypeValidationResult.mimeSubtype
+        if (!mimeTypeValidationResult.isValid) {
+            return ResponseEntity.badRequest().body("File is not an accepted type: $detectedMimeSubtype")
         }
-
-        log.info("File is an accepted type: ${mediaTypeValidationResult.mediaType?.toString()}")
+        log.info("File is an accepted type: $detectedMimeSubtype")
 
         // TODO prevent very large files from being uploaded
 
-        // TODO capture actual user id
-        val userId = UUID.fromString("1aeabbac-84a5-11ee-9c3b-37b635df60b6")
-
         // save the file to the storage service
-        log.info("Using storage service type: ${storageService.getType()}")
         val bytes = filePart.toByteArray()
-        val imageLocation = storageService.saveImage(bytes)
-        log.info("image location: $imageLocation")
+        val savedImageLocation = storageService.saveImage(bytes, detectedMimeSubtype!!)
+        log.info("Saved image location: $savedImageLocation")
 
+        // TODO capture actual user id after authentication is implemented
+//        val userId = UUID.fromString("1aeabbac-84a5-11ee-9c3b-37b635df60b6")
 
         // save the image to the database
 //        val fileSize = bytes.size.toLong()
@@ -62,7 +58,7 @@ class ImageController(
 
     @GetMapping("/accepted-types")
     suspend fun getAcceptedImageTypes(): ResponseEntity<AcceptedImageTypes> {
-        val acceptedTypeStr = imagesConfig.allowedTypes
+        val acceptedTypeStr = imagesConfig.allowedMimeSubtypes
         val acceptedTypes = AcceptedImageTypes(acceptedTypeStr)
         return ResponseEntity.ok(acceptedTypes)
     }

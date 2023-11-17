@@ -1,7 +1,7 @@
 package dev.surly.images.util
 
 import dev.surly.images.model.Image
-import dev.surly.images.model.MediaTypeValidationResult
+import dev.surly.images.model.MimeTypeValidationResult
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactor.awaitSingle
 import org.apache.tika.config.TikaConfig
@@ -32,24 +32,24 @@ object FilePartExtensions {
             }
     }
 
-    suspend fun FilePart.isValidMediaType(acceptedImageTypes: Set<String>): MediaTypeValidationResult {
+    suspend fun FilePart.isValidMimeType(acceptedMimeTypes: Set<String>): MimeTypeValidationResult {
         val mediaType = this.headers().contentType
         mediaType?.let {
             val type = it.type
             val subType = it.subtype
-            if (type == "image" && acceptedImageTypes.contains(subType)) {
-                return MediaTypeValidationResult(mediaType.toString(), isValid = true)
+            if (type == "image" && acceptedMimeTypes.contains(subType)) {
+                return MimeTypeValidationResult(mediaType.toString(), true)
             } else {
                 // let's try Tika
                 val tikaMediaType = getFileMimeTypeWithTika(this).awaitFirstOrNull()
-                if (tikaMediaType?.type == "image" && acceptedImageTypes.contains(tikaMediaType.subtype)) {
-                    return MediaTypeValidationResult(tikaMediaType.toString(), true)
+                if (tikaMediaType?.type == "image" && acceptedMimeTypes.contains(tikaMediaType.subtype)) {
+                    return MimeTypeValidationResult(tikaMediaType.toString(), true)
                 } else {
-                    return MediaTypeValidationResult(tikaMediaType.toString(), false)
+                    return MimeTypeValidationResult(tikaMediaType.toString(), false)
                 }
             }
         }
-        return MediaTypeValidationResult(mediaType.toString(), false)
+        return MimeTypeValidationResult(null, false)
     }
 
     suspend fun FilePart.toByteArray(): ByteArray {
