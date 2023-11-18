@@ -13,8 +13,8 @@
 * [ ] Add register endpoint
 * [ ] Add get token endpoint
 * [x] Add image upload endpoint with validation
-* [ ] Add image `GET` endpoint
-* [ ] Add image transform endpoint
+* [x] Add image `GET` by id endpoint
+* [x] Add image download endpoint
 * [ ] Add tests
 
 ### Worker

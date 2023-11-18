@@ -13,6 +13,7 @@ import dev.surly.images.util.FilePartExtensions.toByteArray
 import dev.surly.images.util.FilePartExtensions.toImage
 import kotlinx.coroutines.flow.Flow
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
@@ -32,7 +33,15 @@ class ImageController(
     companion object {
         private val log = LoggerFactory.getLogger(ImageController::class.java)
     }
-
+    @GetMapping("/{id}/download")
+    suspend fun downloadImage(@PathVariable id: UUID): ResponseEntity<ByteArray> {
+        val image = imageService.findById(id) ?: return ResponseEntity.notFound().build()
+        val bytes = storageService.loadImage(image.path)
+        val headers = HttpHeaders()
+        headers.add("Content-Type", image.type)
+        headers.add("Content-Disposition", "attachment; filename=${image.path}")
+        return ResponseEntity.ok().headers(headers).body(bytes)
+    }
 
     @PostMapping("/upload")
     suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<Image> {
