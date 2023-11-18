@@ -36,6 +36,12 @@ dependencies {
 	implementation("org.slf4j:slf4j-api")
 	implementation("ch.qos.logback:logback-classic")
 	implementation("io.nats:jnats:2.17.1")
+
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
 
 tasks.withType<KotlinCompile> {
