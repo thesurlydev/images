@@ -15,14 +15,14 @@ A distributed async image processing service.
 * [x] Multi-project skeleton.
 * [x] Setup Postgresql database.
 * [x] Setup database migrations.
-* [ ] Setup messaging broker.
-* [ ] Setup minio or local file storage.
+* [x] Setup messaging broker.
+* [x] Setup local file storage.
 
 ### API Server
 
 * [ ] Add register endpoint.
 * [ ] Add get token endpoint.
-* [ ] Add image upload endpoint with validation.
+* [x] Add image upload endpoint with validation.
 * [ ] Add image GET endpoint.
 * [ ] Add image resize endpoint.
 * [ ] Add image rotate endpoint.
@@ -31,9 +31,9 @@ A distributed async image processing service.
 ### Worker
 
 * [x] Add worker skeleton.
-* [ ] Add image processing library.
-* [ ] Add image resize operation.
-* [ ] Add image rotate operation.
+* [x] Add image processing library.
+* [x] Add image resize operation.
+* [x] Add image rotate operation.
 
 ### Documentation
 

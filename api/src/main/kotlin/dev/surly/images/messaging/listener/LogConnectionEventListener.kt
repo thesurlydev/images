@@ -8,6 +8,6 @@ class LogConnectionEventListener : ConnectionListener {
 
     private val log = LoggerFactory.getLogger(LogConnectionEventListener::class.java)
     override fun connectionEvent(conn: Connection?, event: ConnectionListener.Events?) {
-        log.info("Connection event: ${event?.name}")
+        log.info("NATS: ${event?.name}")
     }
 }

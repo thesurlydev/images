@@ -62,17 +62,15 @@ class ImageController(
         val savedImage = imageService.saveImage(image)
         log.info("Saved image to db: $savedImage")
 
-        // TODO publish an event to the message broker to perform the image processing
+        // publish an event to the message broker to perform the image processing
         val req = ImageTransformRequest(
             UUID.randomUUID(), listOf(
-                ImageTransform("resize", hashMapOf("width" to 100, "height" to 100)),
-                ImageTransform("rotate", hashMapOf("degrees" to 90.0))
+                ImageTransform("resize", hashMapOf("width" to 1280, "height" to 720)),
+                ImageTransform("rotate", hashMapOf("degrees" to 180.0))
             )
         )
         val reqBytes = jackson.writeValueAsBytes(req)
-        publisher.publish(messagingConfig.topic, reqBytes)
-
-        // TODO return a 202 Accepted response?
+        publisher.publish(messagingConfig.transformSubject, reqBytes)
 
         return ResponseEntity.ok(savedImage)
     }
@@ -85,7 +83,7 @@ class ImageController(
     }
 
     @GetMapping
-    suspend fun getAllImages(): ResponseEntity<Flow<Image>> {
+    suspend fun getImages(): ResponseEntity<Flow<Image>> {
         // FIXME capture actual user id after authentication is implemented
         val userId = authConfig.testUserId
         val images = imageService.findByUser(userId)
