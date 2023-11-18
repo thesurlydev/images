@@ -1,9 +1,14 @@
 package dev.surly.images.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import dev.surly.images.config.AuthConfig
 import dev.surly.images.config.ImageConfig
+import dev.surly.images.config.MessagingConfig
+import dev.surly.images.messaging.Publisher
 import dev.surly.images.model.AcceptedMimeTypes
 import dev.surly.images.model.Image
+import dev.surly.images.model.ImageTransform
+import dev.surly.images.model.ImageTransformRequest
 import dev.surly.images.service.ImageService
 import dev.surly.images.service.StorageService
 import dev.surly.images.util.FilePartExtensions.isValidMimeType
@@ -19,22 +24,25 @@ import java.util.*
 @RestController
 @RequestMapping("/api/images")
 class ImageController(
-    private val authConfig: AuthConfig,
-    private val imageService: ImageService,
-    private val imagesConfig: ImageConfig,
-    private val storageService: StorageService
+    val authConfig: AuthConfig,
+    val messagingConfig: MessagingConfig,
+    val imageService: ImageService,
+    val imagesConfig: ImageConfig,
+    val storageService: StorageService,
+    val publisher: Publisher,
+    val jackson: ObjectMapper
 ) {
     private val log = LoggerFactory.getLogger(ImageController::class.java)
 
 
     @PostMapping("/upload")
-    suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<String> {
+    suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<Image> {
 
         // verify that the file is an image
         val mimeTypeValidationResult = filePart.isValidMimeType(imagesConfig.allowedMimeTypes)
         val detectedMimeType = mimeTypeValidationResult.mimeType
         if (!mimeTypeValidationResult.isValid) {
-            return ResponseEntity.badRequest().body("File is not an accepted type: $detectedMimeType")
+            return ResponseEntity.badRequest().build()
         }
         log.info("File is an accepted type: $detectedMimeType")
 
@@ -55,10 +63,18 @@ class ImageController(
         log.info("Saved image to db: $savedImage")
 
         // TODO publish an event to the message broker to perform the image processing
+        val req = ImageTransformRequest(
+            UUID.randomUUID(), listOf(
+                ImageTransform("resize", hashMapOf("width" to 100, "height" to 100)),
+                ImageTransform("rotate", hashMapOf("degrees" to 90.0))
+            )
+        )
+        val reqBytes = jackson.writeValueAsBytes(req)
+        publisher.publish(messagingConfig.topic, reqBytes)
 
         // TODO return a 202 Accepted response?
 
-        return ResponseEntity.ok("File uploaded successfully")
+        return ResponseEntity.ok(savedImage)
     }
 
     @GetMapping("/accepted")

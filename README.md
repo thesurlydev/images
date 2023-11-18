@@ -41,21 +41,28 @@ A distributed async image processing service.
 * [ ] Add CHANGELOG.md.
 * [ ] Add CONTRIBUTING.md.
 
-## Features
+## Highlighted Features
 
-## Tech Stack
+* Selectable storage implementation based on Spring profiles.
+* Batched image processing - perform multiple operations in a single request.
+* Horizontal image processing scalability via "worker" nodes.
+* Robust mime type validation via Apache Tika.
+* All components are containerized and can be run locally for a great developer experience.
 
+### Tech Stack
+
+* Docker - containerization
+* Docker Compose - container orchestration
 * Kotlin - primary language
 * PostgreSQL - database
 * Spring Boot - web framework
 * Gradle - build tool
 * Docker - containerization
-* Minio - S3 compatible object storage
 * NATS - messaging broker
 
 ## How to build and test
 
-See: CONTRIBUTING.md
+See: CONTRIBUTING.md (TODO)
 
 ## How to run
 

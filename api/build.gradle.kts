@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-//	implementation("com.jlefebure:spring-boot-starter-minio:1.1")
+	implementation(project(":core"))
 
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
@@ -42,9 +42,7 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework:spring-jdbc")
 
-//	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.postgresql:r2dbc-postgresql")
-//	runtimeOnly("com.h2database:h2")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
