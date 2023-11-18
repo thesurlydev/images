@@ -21,26 +21,9 @@ repositories {
 dependencies {
     implementation(project(":core"))
 
-    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    implementation("org.slf4j:slf4j-api")
-    implementation("ch.qos.logback:logback-classic")
-
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-
-    implementation("io.nats:jnats:2.17.1")
-
-    implementation("org.postgresql:r2dbc-postgresql")
-
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:r2dbc")

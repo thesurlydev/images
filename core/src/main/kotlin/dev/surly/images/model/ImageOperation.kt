@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 import java.util.*
 
 @Table("image_operations")
-data class ImageOperations(
+data class ImageOperation(
     @Id val id: UUID,
     @Column("image_id") val imageId: UUID,
     @Column("operation_id") val operationId: UUID,

@@ -27,21 +27,24 @@ the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().a
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter")/* {
+	implementation("org.springframework.boot:spring-boot-starter") {
 		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-	}*/
-	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-	implementation("org.springframework.boot:spring-boot-starter-json")
-	implementation("org.postgresql:r2dbc-postgresql")
-	implementation("org.slf4j:slf4j-api")
-	implementation("ch.qos.logback:logback-classic")
-	implementation("io.nats:jnats:2.17.1")
+	}
+	api("org.springframework.boot:spring-boot-starter-data-r2dbc")
+	api("org.springframework.boot:spring-boot-starter-json")
+	api("org.postgresql:r2dbc-postgresql")
 
-	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	api("org.slf4j:slf4j-api")
+	api("ch.qos.logback:logback-classic")
+
+	api("io.nats:jnats:2.17.1")
+
+	api("com.fasterxml.jackson.module:jackson-module-kotlin")
+	api("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	api("org.jetbrains.kotlin:kotlin-reflect")
+	api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+	api("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
+	api("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
 
 tasks.withType<KotlinCompile> {

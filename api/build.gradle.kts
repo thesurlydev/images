@@ -22,31 +22,15 @@ dependencies {
 	implementation(project(":core"))
 
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 //	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-	implementation("org.slf4j:slf4j-api")
-	implementation("ch.qos.logback:logback-classic")
 
 	implementation("org.apache.tika:tika-core:2.9.1")
-
-	implementation("io.nats:jnats:2.17.1")
-	implementation("io.nats:nats-spring:0.5.6")
-
-	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-
-	implementation("org.postgresql:r2dbc-postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("org.springframework.security:spring-security-test")
+//	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:r2dbc")

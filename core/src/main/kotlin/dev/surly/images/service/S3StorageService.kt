@@ -1,5 +1,6 @@
 package dev.surly.images.service
 
+import dev.surly.images.model.SaveImageResult
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service
 class S3StorageService : StorageService {
 
     override suspend fun getType(): String = "s3"
-    override suspend fun saveImage(bytes: ByteArray, mimeType: String): String {
+    override suspend fun saveImage(bytes: ByteArray, extension: String): SaveImageResult {
         TODO("Not yet implemented")
     }
 

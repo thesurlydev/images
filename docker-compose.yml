@@ -1,6 +1,8 @@
 services:
 #  api:
-#    build: ./api
+#    build:
+#      context: ./api
+#      dockerfile: Dockerfile
 #    container_name: images-api
 #    hostname: api
 #    env_file:
@@ -8,12 +10,13 @@ services:
 #    ports:
 #      - 8080:8080
 #    depends_on:
-##      - minio
 #      - nats
 #      - postgres
 #      - worker
 #  worker:
-#    build: ./worker
+#    build:
+#      context: ./api
+#      dockerfile: ./api/Dockerfile
 #    container_name: images-worker
 #    hostname: worker
 #    env_file:
@@ -21,22 +24,8 @@ services:
 #    ports:
 #      - 8081:8081
 #    depends_on:
-##      - minio
 #      - nats
 #      - postgres
-#  minio:
-#    image: minio/minio
-#    container_name: images-minio
-#    hostname: storage
-#    entrypoint: server /data --console-address :9001
-#    env_file:
-#      - .env
-#    ports:
-#      - 9000:9000
-#      - 9001:9001
-#    restart: always
-#    volumes:
-#      - ./data/storage:/data
   nats:
     image: nats:latest
     container_name: images-nats

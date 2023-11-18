@@ -5,10 +5,7 @@ import dev.surly.images.config.AuthConfig
 import dev.surly.images.config.ImageConfig
 import dev.surly.images.config.MessagingConfig
 import dev.surly.images.messaging.Publisher
-import dev.surly.images.model.AcceptedMimeTypes
-import dev.surly.images.model.Image
-import dev.surly.images.model.ImageTransform
-import dev.surly.images.model.ImageTransformRequest
+import dev.surly.images.model.*
 import dev.surly.images.service.ImageService
 import dev.surly.images.service.StorageService
 import dev.surly.images.util.FilePartExtensions.isValidMimeType
@@ -52,25 +49,31 @@ class ImageController(
 
         // save the file to the storage service
         val bytes = filePart.toByteArray()
-        val savedFileName = storageService.saveImage(bytes, detectedMimeType!!)
-        log.info("Saved image location: $savedFileName")
+        val extension = detectedMimeType?.split("/")?.get(1)
+        val saveResult = extension?.let { storageService.saveImage(bytes, it) }
+        log.info("Saved image to '${storageService.getType()}' storage: $saveResult")
 
         // FIXME capture actual user id after authentication is implemented
         val userId = authConfig.testUserId
 
         // save the image to the database
-        val fileSize = bytes.size.toLong()
-        val image = filePart.toImage(userId, savedFileName, fileSize, detectedMimeType)
-        val savedImage = imageService.saveImage(image)
+        val image = detectedMimeType?.let { type ->
+            saveResult?.let { sr ->
+                filePart.toImage(userId, sr.location, sr.sizeInBytes, type)
+            }
+        }
+        val savedImage = image?.let { imageService.saveImage(it) }
         log.info("Saved image to db: $savedImage")
 
         // publish an event to the message broker to perform the image processing
-        val req = ImageTransformRequest(
-            UUID.randomUUID(), listOf(
-                ImageTransform("resize", hashMapOf("width" to 1280, "height" to 720)),
-                ImageTransform("rotate", hashMapOf("degrees" to 180.0))
+        val req = savedImage?.id?.let {
+            ImageTransformRequest(
+                it, listOf(
+                    ScaleImageTransform(1280, 720),
+                    RotateImageTransform(180.0)
+                )
             )
-        )
+        }
         val reqBytes = jackson.writeValueAsBytes(req)
         publisher.publish(messagingConfig.transformSubject, reqBytes)
 
