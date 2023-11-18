@@ -45,7 +45,9 @@ class ImageTransformService(
             "complete",
             type = imageDb.type,
             fileSizeBytes = saveResult.sizeInBytes,
-            createdAt = null
+            width = saveResult.dimensions.first,
+            height = saveResult.dimensions.second,
+            original_image_id = req.imageId
         )
         val transformedImageDb = imageService.saveImage(transformedImage)
         log.info("TRFM: saved transformed image to db: $transformedImageDb")

@@ -59,7 +59,7 @@ class ImageController(
         // save the image to the database
         val image = detectedMimeType?.let { type ->
             saveResult?.let { sr ->
-                filePart.toImage(userId, sr.location, sr.sizeInBytes, type)
+                filePart.toImage(userId, sr.location, sr.sizeInBytes, type, sr.dimensions.first, sr.dimensions.second)
             }
         }
         val savedImage = image?.let { imageService.saveImage(it) }

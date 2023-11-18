@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS images
     status            text                                               NOT NULL,
     type              text                                               NOT NULL,
     file_size         bigint                                             NOT NULL,
+    width             integer,
+    height            integer,
     create_timestamp  timestamp with time zone DEFAULT now()             NOT NULL
 );
 

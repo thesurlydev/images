@@ -16,12 +16,14 @@ object FilePartExtensions {
     /**
      * Convert a FilePart to an Image object.
      */
-    fun FilePart.toImage(userId: UUID, path: String, size: Long, type: String): Image = Image(
+    fun FilePart.toImage(userId: UUID, path: String, size: Long, type: String, width: Int, height: Int): Image = Image(
         userId = userId,
         path = path,
         type = type,
         fileSizeBytes = size,
         status = "processing",
+        width = width,
+        height = height
     )
 
     private fun getFileMimeTypeWithTika(filePart: FilePart): Flux<MediaType> {

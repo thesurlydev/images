@@ -21,3 +21,8 @@ fun BufferedImage.toByteArray(formatName: String): ByteArray {
     baos.close()
     return out
 }
+
+fun ByteArray.toImageDimensions(): Pair<Int, Int> {
+    val img = ImageIO.read(this.inputStream())
+    return Pair(img.width, img.height)
+}
