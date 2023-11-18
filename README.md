@@ -10,6 +10,16 @@ A distributed async image processing service.
 * Robust mime type validation via Apache Tika.
 * All components are containerized and can be run locally for a great developer experience.
 
+## Forward Looking Statements
+
+1. The project supports easily adding multiple storage implementations. The current implementation uses the file system
+   for simplicity. A more robust implementation would use a cloud storage provider such as AWS S3 for durability and
+   subsequently AWS CloudFront as a CDN.
+1. Additional image types could be supported by leveraging libraries such as Apache Batik to support SVG.
+1. As of now, the authentication is a simplified version of what should be used in a production environment.
+1. The API should be versioned and documented via OpenAPI. This would ease supporting multiple languages by leveraging
+   code generation for clients.
+
 ## Architecture
 
 ### Components
@@ -30,7 +40,7 @@ TODO
 * Kotlin - primary language
 * PostgreSQL - database
 * Spring Boot - web framework
-* Gradle - build tool
+* Gradle (Kotlin DSL) - build tool
 * Docker - containerization
 * NATS - messaging broker
 
@@ -45,3 +55,5 @@ Start the database:
 ```shell    
 docker-compose up -d
 ```
+
+
