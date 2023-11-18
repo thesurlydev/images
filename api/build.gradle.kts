@@ -26,7 +26,6 @@ dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-//	implementation("org.flywaydb:flyway-core")
 
 	implementation("org.slf4j:slf4j-api")
 	implementation("ch.qos.logback:logback-classic")
@@ -41,7 +40,6 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	implementation("org.springframework:spring-jdbc")
 
 	implementation("org.postgresql:r2dbc-postgresql")
 
