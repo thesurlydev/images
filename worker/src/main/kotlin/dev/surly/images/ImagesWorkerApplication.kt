@@ -1,16 +1,18 @@
 package dev.surly.images
 
-import dev.surly.images.process.ImageProcessor
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import java.io.File
-import javax.imageio.ImageIO
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.runApplication
 
 
 @SpringBootApplication
+@EnableConfigurationProperties
+@ConfigurationPropertiesScan("dev.surly.images.config")
 class ImagesWorkerApplication
 
 fun main(args: Array<String>) {
-//	runApplication<ImagesWorkerApplication>(*args)
+    runApplication<ImagesWorkerApplication>(*args)
 
     /*val testImage = File("/home/shane/projects/images/api/uploads/test1-360k.jpg")
     val testImageBytes = testImage.readBytes()
@@ -20,7 +22,8 @@ fun main(args: Array<String>) {
 //    proc.rotate(testImage.readBytes(), 180.0)
 
 
-    ImageIO.getWriterFormatNames().forEach { println(it) }
+//    ImageIO.getWriterFormatNames().forEach { println(it) }
+
 }
 
 

@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.apache.tika:tika-core:2.9.1")
 
 	implementation("io.nats:jnats:2.17.1")
+	implementation("io.nats:nats-spring:0.5.6")
 
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")

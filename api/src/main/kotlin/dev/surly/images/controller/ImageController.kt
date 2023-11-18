@@ -32,7 +32,9 @@ class ImageController(
     val publisher: Publisher,
     val jackson: ObjectMapper
 ) {
-    private val log = LoggerFactory.getLogger(ImageController::class.java)
+    companion object {
+        private val log = LoggerFactory.getLogger(ImageController::class.java)
+    }
 
 
     @PostMapping("/upload")

@@ -13,7 +13,9 @@ import kotlin.io.path.createDirectories
 @Profile("storage-local")
 class LocalStorageService(val storageConfig: StorageConfig) : StorageService {
 
-    private val log = LoggerFactory.getLogger(LocalStorageService::class.java)
+    companion object {
+        private val log = LoggerFactory.getLogger(LocalStorageService::class.java)
+    }
     override suspend fun getType(): String = "local"
 
     override suspend fun saveImage(bytes: ByteArray, mimeType: String): String {

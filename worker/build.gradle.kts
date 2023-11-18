@@ -16,6 +16,10 @@ java {
 
 repositories {
     mavenCentral()
+    maven {
+        name = "oss-sonatype"
+        url = uri("https://oss.sonatype.org/content/repositories/")
+    }
 }
 
 dependencies {
@@ -36,6 +40,9 @@ dependencies {
     implementation("org.springframework:spring-jdbc")
 
     implementation("io.nats:jnats:2.17.1")
+//    implementation("io.nats:nats-spring:0.5.6")
+//    implementation("io.nats:nats-spring-cloud-stream-binder:0.5.6")
+//    implementation("org.springframework.cloud:spring-cloud-stream-starter-build:4.0.4")
 
     implementation("org.postgresql:r2dbc-postgresql")
 
