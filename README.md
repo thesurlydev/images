@@ -20,6 +20,14 @@ A distributed async image processing service.
 1. The API should be versioned and documented via OpenAPI. This would ease supporting multiple languages by leveraging
    code generation for clients.
 
+## Requirements
+
+These are the requirements for running the project locally:
+
+* Docker and Docker Compose
+* curl
+
+
 ## Architecture
 
 ### Components
@@ -50,10 +58,8 @@ See: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## How to run
 
-Start the database:
-
 ```shell    
-docker-compose up -d
+docker-compose up --build
 ```
 
 
