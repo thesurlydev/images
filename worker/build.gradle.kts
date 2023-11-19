@@ -44,9 +44,6 @@ tasks.bootBuildImage {
     builder.set("paketobuildpacks/builder-jammy-base:latest")
 }
 
-
-tasks.withType<Jar> {
-    manifest {
-        attributes["Main-Class"] = "dev.surly.images.ImagesWorkerApplicationKt"
-    }
+tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
+    springBoot.mainClass.set("dev.surly.images.ImagesWorkerApplicationKt")
 }

@@ -43,10 +43,8 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<Jar> {
-	manifest {
-		attributes["Main-Class"] = "dev.surly.images.ImagesApiApplicationKt"
-	}
+tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
+	springBoot.mainClass.set("dev.surly.images.ImagesApiApplicationKt")
 }
 
 tasks.withType<Test> {
