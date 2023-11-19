@@ -36,6 +36,7 @@ class ImageController(
     companion object {
         private val log = LoggerFactory.getLogger(ImageController::class.java)
     }
+
     @GetMapping("/{id}/download")
     suspend fun downloadImage(@PathVariable id: UUID): ResponseEntity<Any> {
         when (val image = imageService.findById(id)) {
@@ -48,6 +49,7 @@ class ImageController(
                 )
                 return ResponseEntity.status(404).body(notFoundBody)
             }
+
             else -> {
                 val bytes = storageService.loadImage(image.path)
                 val headers = HttpHeaders()
@@ -81,9 +83,19 @@ class ImageController(
         val userId = authConfig.testUserId
 
         // save the image to the database
+        val originalImageName = filePart.filename()
         val image = detectedMimeType?.let { type ->
             saveResult?.let { sr ->
-                filePart.toImage(userId, sr.location, sr.sizeInBytes, type, sr.dimensions.first, sr.dimensions.second)
+                filePart.toImage(
+                    userId,
+                    sr.location,
+                    sr.sizeInBytes,
+                    type,
+                    sr.dimensions.first,
+                    sr.dimensions.second,
+                    null,
+                    originalImageName
+                )
             }
         }
         val savedImage = image?.let { imageService.saveImage(it) }

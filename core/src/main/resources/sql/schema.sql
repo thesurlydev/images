@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS audit_logs
 (
-    id               uuid unique primary key DEFAULT gen_random_uuid() NOT NULL,
+    id               uuid unique primary key  DEFAULT gen_random_uuid() NOT NULL,
     user_id          uuid                                               NOT NULL references users (id),
     operation        text                                               NOT NULL,
     status           text                                               NOT NULL,
@@ -21,16 +21,17 @@ CREATE TABLE IF NOT EXISTS audit_logs
 
 CREATE TABLE IF NOT EXISTS images
 (
-    id                uuid unique primary key  DEFAULT gen_random_uuid() NOT NULL,
-    user_id           uuid                                               NOT NULL references users (id),
-    original_image_id uuid,
-    path              text                                               NOT NULL,
-    status            text                                               NOT NULL,
-    type              text                                               NOT NULL,
-    file_size         bigint                                             NOT NULL,
-    width             integer,
-    height            integer,
-    create_timestamp  timestamp with time zone DEFAULT now()             NOT NULL
+    id                  uuid unique primary key  DEFAULT gen_random_uuid() NOT NULL,
+    user_id             uuid                                               NOT NULL references users (id),
+    original_image_id   uuid,
+    original_image_name text,
+    path                text                                               NOT NULL,
+    status              text                                               NOT NULL,
+    type                text                                               NOT NULL,
+    file_size           bigint                                             NOT NULL,
+    width               integer,
+    height              integer,
+    create_timestamp    timestamp with time zone DEFAULT now()             NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS operations

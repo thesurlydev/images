@@ -17,7 +17,8 @@ data class Image(
     @Column("file_size") @JsonProperty("file_size") val fileSizeBytes: Long,
     val width: Int? = null,
     val height: Int? = null,
-    val original_image_id: UUID? = null,
+    @Column("original_image_id") @JsonProperty("original_image_id") var originalImageId: UUID? = null,
+    @Column("original_image_name") @JsonProperty("original_image_name") var originalImageName: String? = null,
     @Column("create_timestamp") @JsonProperty("created_at") var createdAt: OffsetDateTime? = null
 ) {
 }

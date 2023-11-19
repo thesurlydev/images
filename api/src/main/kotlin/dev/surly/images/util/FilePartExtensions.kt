@@ -16,14 +16,25 @@ object FilePartExtensions {
     /**
      * Convert a FilePart to an Image object.
      */
-    fun FilePart.toImage(userId: UUID, path: String, size: Long, type: String, width: Int, height: Int): Image = Image(
+    fun FilePart.toImage(
+        userId: UUID,
+        path: String,
+        size: Long,
+        type: String,
+        width: Int,
+        height: Int,
+        originalImageId: UUID? = null,
+        originalImageName: String? = null
+    ): Image = Image(
         userId = userId,
         path = path,
         type = type,
         fileSizeBytes = size,
         status = "processing",
         width = width,
-        height = height
+        height = height,
+        originalImageId = originalImageId,
+        originalImageName = originalImageName,
     )
 
     private fun getFileMimeTypeWithTika(filePart: FilePart): Flux<MediaType> {
@@ -45,7 +56,11 @@ object FilePartExtensions {
                     val tikaMediaType = getFileMimeTypeWithTika(this).awaitFirstOrNull()
                     val tikaMimeTypeStr = tikaMediaType.toString()
                     when {
-                        acceptedMimeTypes.contains(tikaMimeTypeStr) -> return MimeTypeValidationResult(tikaMimeTypeStr, true)
+                        acceptedMimeTypes.contains(tikaMimeTypeStr) -> return MimeTypeValidationResult(
+                            tikaMimeTypeStr,
+                            true
+                        )
+
                         else -> return MimeTypeValidationResult(tikaMimeTypeStr, false)
                     }
                 }

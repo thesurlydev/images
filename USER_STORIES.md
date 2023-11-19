@@ -116,7 +116,9 @@ Content-Length: 276
   "width": 2016,
   "height": 1512,
   "original_image_id": null,
-  "created_at": null
+  "created_at": null,
+  "original_image_id": null,
+  "original_image_name": "test1-2016x1512-360k.jpg",
 }
 ```
 
@@ -256,28 +258,30 @@ Content-Type: application/json
 
 [
   {
-    "id": "7a2448de-65b5-43de-b5b6-b923b4875aa3",
+    "id": "55fa9f8a-5c6c-434d-9049-689176c7e3ad",
     "user_id": "1aeabbac-84a5-11ee-9c3b-37b635df60b6",
-    "path": "c611519d-4784-46b8-9f9b-3d27e1b9e98b.jpeg",
+    "path": "e0b71390-1cd0-468e-925a-d2184cd7dafc.jpeg",
     "status": "processing",
     "type": "image/jpeg",
     "file_size": 351993,
     "width": 2016,
     "height": 1512,
     "original_image_id": null,
-    "created_at": "2023-11-19T20:42:01.212528Z"
+    "original_image_name": "test1-2016x1512-360k.jpg",
+    "created_at": "2023-11-19T13:23:43.470859-08:00"
   },
   {
-    "id": "2a8d17be-dc64-4e5e-80dc-bb8a4e86188c",
+    "id": "9c3580cf-9946-4a2c-993e-1277fc3a66b0",
     "user_id": "1aeabbac-84a5-11ee-9c3b-37b635df60b6",
-    "path": "fb686222-f00f-4474-a653-aa570317bd8a.jpeg",
+    "path": "d0dbb4bd-dc01-4d03-a7c1-e265e71337eb.jpeg",
     "status": "complete",
     "type": "image/jpeg",
     "file_size": 38364,
     "width": 1280,
     "height": 720,
-    "original_image_id": "7a2448de-65b5-43de-b5b6-b923b4875aa3",
-    "created_at": "2023-11-19T20:42:01.637001Z"
+    "original_image_id": "55fa9f8a-5c6c-434d-9049-689176c7e3ad",
+    "original_image_name": null,
+    "created_at": "2023-11-19T13:23:43.900394-08:00"
   }
 ]
 ```
@@ -292,18 +296,19 @@ Example response:
 ```shell
 HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 331
+Content-Length: 363
 
 {
-  "id": "2a8d17be-dc64-4e5e-80dc-bb8a4e86188c",
+  "id": "9c3580cf-9946-4a2c-993e-1277fc3a66b0",
   "user_id": "1aeabbac-84a5-11ee-9c3b-37b635df60b6",
-  "path": "fb686222-f00f-4474-a653-aa570317bd8a.jpeg",
+  "path": "d0dbb4bd-dc01-4d03-a7c1-e265e71337eb.jpeg",
   "status": "complete",
   "type": "image/jpeg",
   "file_size": 38364,
   "width": 1280,
   "height": 720,
-  "original_image_id": "7a2448de-65b5-43de-b5b6-b923b4875aa3",
-  "created_at": "2023-11-19T20:42:01.637001Z"
+  "original_image_id": "55fa9f8a-5c6c-434d-9049-689176c7e3ad",
+  "original_image_name": null,
+  "created_at": "2023-11-19T13:23:43.900394-08:00"
 }
 ```
