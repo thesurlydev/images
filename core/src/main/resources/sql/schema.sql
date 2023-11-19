@@ -9,6 +9,16 @@ CREATE TABLE IF NOT EXISTS users
     CONSTRAINT unique_user UNIQUE (username, email)
 );
 
+CREATE TABLE IF NOT EXISTS audit_logs
+(
+    id               uuid unique primary key DEFAULT gen_random_uuid() NOT NULL,
+    user_id          uuid                                               NOT NULL references users (id),
+    operation        text                                               NOT NULL,
+    status           text                                               NOT NULL,
+    message          text                                               NOT NULL,
+    create_timestamp timestamp with time zone DEFAULT now()             NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS images
 (
     id                uuid unique primary key  DEFAULT gen_random_uuid() NOT NULL,

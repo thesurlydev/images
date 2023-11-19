@@ -6,6 +6,7 @@ import dev.surly.images.config.ImageConfig
 import dev.surly.images.config.MessagingConfig
 import dev.surly.images.messaging.Publisher
 import dev.surly.images.model.*
+import dev.surly.images.service.AuditLogService
 import dev.surly.images.service.ImageService
 import dev.surly.images.service.StorageService
 import dev.surly.images.util.FilePartExtensions.isValidMimeType
@@ -14,6 +15,7 @@ import dev.surly.images.util.FilePartExtensions.toImage
 import kotlinx.coroutines.flow.Flow
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
@@ -27,6 +29,7 @@ class ImageController(
     val imageService: ImageService,
     val imagesConfig: ImageConfig,
     val storageService: StorageService,
+    val auditLogService: AuditLogService,
     val publisher: Publisher,
     val jackson: ObjectMapper
 ) {
@@ -34,27 +37,39 @@ class ImageController(
         private val log = LoggerFactory.getLogger(ImageController::class.java)
     }
     @GetMapping("/{id}/download")
-    suspend fun downloadImage(@PathVariable id: UUID): ResponseEntity<ByteArray> {
-        val image = imageService.findById(id) ?: return ResponseEntity.notFound().build()
-        val bytes = storageService.loadImage(image.path)
-        val headers = HttpHeaders()
-        headers.add("Content-Type", image.type)
-        headers.add("Content-Disposition", "attachment; filename=${image.path}")
-        return ResponseEntity.ok().headers(headers).body(bytes)
+    suspend fun downloadImage(@PathVariable id: UUID): ResponseEntity<Any> {
+        when (val image = imageService.findById(id)) {
+            null -> {
+                val msg = "Image not found: $id"
+                auditLogService.logError(authConfig.testUserId, "download", msg)
+                val notFoundBody = mapOf(
+                    "status" to "Not found",
+                    "message" to msg
+                )
+                return ResponseEntity.status(404).body(notFoundBody)
+            }
+            else -> {
+                val bytes = storageService.loadImage(image.path)
+                val headers = HttpHeaders()
+                headers.add("Content-Type", image.type)
+                headers.add("Content-Disposition", "attachment; filename=${image.path}")
+                auditLogService.logSuccess(authConfig.testUserId, "download", "Downloaded image: $id")
+                return ResponseEntity.ok().headers(headers).body(bytes)
+            }
+        }
     }
 
     @PostMapping("/upload")
-    suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<Image> {
+    suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<Any> {
 
         // verify that the file is an image
         val mimeTypeValidationResult = filePart.isValidMimeType(imagesConfig.allowedMimeTypes)
         val detectedMimeType = mimeTypeValidationResult.mimeType
         if (!mimeTypeValidationResult.isValid) {
-            return ResponseEntity.badRequest().build()
+            val msg = "File is not an accepted type: $detectedMimeType"
+            auditLogService.logError(authConfig.testUserId, "upload", msg)
+            return ResponseEntity.badRequest().body(mapOf("status" to "Bad request", "message" to msg))
         }
-        log.info("File is an accepted type: $detectedMimeType")
-
-        // TODO prevent very large files from being uploaded
 
         // save the file to the storage service
         val bytes = filePart.toByteArray()
@@ -85,6 +100,8 @@ class ImageController(
         }
         val reqBytes = jackson.writeValueAsBytes(req)
         publisher.publish(messagingConfig.transformSubject, reqBytes)
+
+        auditLogService.logSuccess(userId, "upload", "Uploaded image: ${savedImage?.id}")
 
         return ResponseEntity.ok(savedImage)
     }
