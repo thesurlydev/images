@@ -1,31 +1,35 @@
 services:
-#  api:
-#    build:
-#      context: ./api
-#      dockerfile: Dockerfile
-#    container_name: images-api
-#    hostname: api
-#    env_file:
-#      - ./api/.env
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - nats
-#      - postgres
-#      - worker
-#  worker:
-#    build:
-#      context: ./api
-#      dockerfile: ./api/Dockerfile
-#    container_name: images-worker
-#    hostname: worker
-#    env_file:
-#      - ./worker/.env
-#    ports:
-#      - 8081:8081
-#    depends_on:
-#      - nats
-#      - postgres
+  api:
+    build:
+      dockerfile: Dockerfile-api
+    container_name: images-api
+    hostname: api
+    volumes:
+      - shared-data:/tmp/image-uploads
+    environment:
+      - MESSAGING_SERVER_URL=nats://nats:4222
+      - SPRING_R2DBC_HOST=postgres
+    ports:
+      - 8080:8080
+    depends_on:
+      - nats
+      - postgres
+      - worker
+  worker:
+    build:
+      dockerfile: Dockerfile-worker
+    container_name: images-worker
+    hostname: worker
+    volumes:
+      - shared-data:/tmp/image-uploads
+    environment:
+      - MESSAGING_SERVER_URL=nats://nats:4222
+      - SPRING_R2DBC_HOST=postgres
+    ports:
+      - 8081:8081
+    depends_on:
+      - nats
+      - postgres
   nats:
     image: nats:latest
     container_name: images-nats
@@ -49,5 +53,6 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 volumes:
+  shared-data:
   db:
     driver: local
