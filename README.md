@@ -8,6 +8,7 @@ A distributed async image processing service.
 * Batched image processing - perform multiple operations in a single request.
 * Horizontal image processing scalability via "worker" nodes.
 * Robust mime type validation via Apache Tika.
+* Authentication via JWT.
 * All components are containerized and can be run locally for a great developer experience.
 
 ## Forward Looking Statements
@@ -19,14 +20,14 @@ A distributed async image processing service.
 2. **Supported Image Types** - Additional image types can be supported by leveraging libraries such as Apache Batik to
    support SVG.
 3. **Authentication** - The authentication is a simplified version of what should be used in a production environment.
-   Here a JWT
-   token is used to authenticate the user. In a production environment, a more robust solution should be used such as
+   Here a JWT token is used to authenticate the user. In a production environment, a more robust solution should be used such as
    OAuth2.
 4. **API Documentation** - The API should be versioned and documented via OpenAPI. This would ease supporting multiple
    languages by leveraging
    code generation for clients. This would also allow for robust contract testing.
 5. **Testing** - The project has a few unit and integration tests but more are warranted before being considered ready
    for production. Additional unit and integration tests should be added as well as load tests.
+6. **Monitoring** - The project includes basic logging but metrics and tracing should be added for production use. 
 
 ## Requirements
 

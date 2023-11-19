@@ -10,12 +10,12 @@
 
 ### API Server
 
-* [ ] Add error message to image or separate log table
-* [ ] Add authentication middleware
+* [x] Add audit logging and logs endpoint
 * [x] Add image upload endpoint with validation
 * [x] Add image `GET` by id endpoint
 * [x] Add image download endpoint
 * [x] Enable to run with `docker-compose`
+* [ ] Add authentication middleware
 * [ ] Add tests
 
 ### Worker
@@ -28,7 +28,7 @@
 
 ### Documentation
 
-* [ ] Add user stories with `curl` commands
+* [x] Add user stories with `curl` commands and example responses
 * [x] Add architecture diagram
 * [x] Add CHANGELOGmd
 * [x] Add CONTRIBUTINGmd
