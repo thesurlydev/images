@@ -1,14 +1,21 @@
 ### Health
 GET {{base_url}}/actuator/health
 
-### Users
-GET {{base_url}}/api/users
+### Who am I?
+GET {{base_url}}/api/whoami
 
 ### Images
 GET {{base_url}}/api/images
 
+### Image by id
+@image_id = 2a8d17be-dc64-4e5e-80dc-bb8a4e86188c
+GET {{base_url}}/api/images/{{image_id}}
+
+### Logs
+GET {{base_url}}/api/logs
+
 ### Download image
-@image_id = fc6e7f1b-34c0-481c-9fb3-8ada55b49bc6
+#@image_id = 92099701-604a-4048-9325-107bf44dc463
 GET {{base_url}}/api/images/{{image_id}}/download
 
 ### Accepted mime types
