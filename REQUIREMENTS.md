@@ -14,8 +14,8 @@ Please submit the following:
 The business requires a new service to handle and process images with the following requirements:
 
 * [x] Allow authenticated users to upload image files. Validate the files are only images.
-* [ ] Allow authenticated users to download a 1280x720 sized and 180 degrees rotated version of the image.
-* [ ] Allow authenticated users to download the original image.
+* [x] Allow authenticated users to download a 1280x720 sized and 180 degrees rotated version of the image.
+* [x] Allow authenticated users to download the original image.
 * [ ] Allow authenticated users to see a log of the uploaded images with status of processing, any failure details and which
   user uploaded it.
 * [ ] Allow external systems to download the modified image on request. The external systems will provide a fixed token to

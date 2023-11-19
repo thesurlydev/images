@@ -15,9 +15,11 @@ A distributed async image processing service.
 1. The project supports easily adding multiple storage implementations. The current implementation uses the file system
    for simplicity. A more robust implementation would use a cloud storage provider such as AWS S3 for durability and
    subsequently AWS CloudFront as a CDN.
-1. Additional image types could be supported by leveraging libraries such as Apache Batik to support SVG.
-1. As of now, the authentication is a simplified version of what should be used in a production environment.
-1. The API should be versioned and documented via OpenAPI. This would ease supporting multiple languages by leveraging
+2. Additional image types can be supported by leveraging libraries such as Apache Batik to support SVG.
+3. As of now, the authentication is a simplified version of what should be used in a production environment. Here a JWT
+   token is used to authenticate the user. In a production environment, a more robust solution should be used such as
+   OAuth2.
+4. The API should be versioned and documented via OpenAPI. This would ease supporting multiple languages by leveraging
    code generation for clients.
 
 ## Requirements
@@ -27,19 +29,17 @@ These are the requirements for running the project locally:
 * Docker and Docker Compose
 * curl
 
-
 ## Architecture
 
-### Components
 
-- **api** - REST API server which serves as the entry point for the system.
-- **core** - Core library which contains shared code between the api and worker.
-- **worker** - Worker which processes image processing jobs.
-- **message broker** - NATS messaging broker which is used for communication between the api and worker.
+![Component Diagram](etc/assets/arch-diagram.svg)
 
-### Component Diagram
-
-TODO
+- **api** - async REST API server which serves as the entry point for the system. (Spring Boot w/Kotlin)
+- **blob storage** - storage for images. (File system, S3, etc.)
+- **core** - library which contains shared code between the `api` and `worker`. (Kotlin)
+- **db** - relational database which stores image metadata. (PostgreSQL)
+- **message broker** - messaging broker which is used for communication between the api and worker. (NATS)
+- **worker** - worker which processes image processing jobs. (Spring Boot)
 
 ### Tech Stack
 
