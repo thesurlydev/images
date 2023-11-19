@@ -12,25 +12,30 @@ A distributed async image processing service.
 
 ## Forward Looking Statements
 
-1. The project supports easily adding multiple storage implementations. The current implementation uses the file system
+1. **Blob Storage** - The project supports easily adding multiple storage implementations. The current implementation
+   uses the file system
    for simplicity. A more robust implementation would use a cloud storage provider such as AWS S3 for durability and
    subsequently AWS CloudFront as a CDN.
-2. Additional image types can be supported by leveraging libraries such as Apache Batik to support SVG.
-3. As of now, the authentication is a simplified version of what should be used in a production environment. Here a JWT
+2. **Supported Image Types** - Additional image types can be supported by leveraging libraries such as Apache Batik to
+   support SVG.
+3. **Authentication** - The authentication is a simplified version of what should be used in a production environment.
+   Here a JWT
    token is used to authenticate the user. In a production environment, a more robust solution should be used such as
    OAuth2.
-4. The API should be versioned and documented via OpenAPI. This would ease supporting multiple languages by leveraging
-   code generation for clients.
+4. **API Documentation** - The API should be versioned and documented via OpenAPI. This would ease supporting multiple
+   languages by leveraging
+   code generation for clients. This would also allow for robust contract testing.
+5. **Testing** - The project has a few unit and integration tests but more are warranted before being considered ready
+   for production. Additional unit and integration tests should be added as well as load tests.
 
 ## Requirements
 
 These are the requirements for running the project locally:
 
-* Docker and Docker Compose
+* Docker Compose
 * curl
 
 ## Architecture
-
 
 ![Component Diagram](etc/assets/arch-diagram.svg)
 
