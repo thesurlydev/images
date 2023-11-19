@@ -1,13 +1,8 @@
 package dev.surly.images.process
 
 import dev.surly.images.model.ImageTransformRequest
-import dev.surly.images.util.toBufferedImage
-import dev.surly.images.util.toByteArray
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.awt.Image
-import java.awt.image.BufferedImage
-import java.util.stream.Collectors
 
 @Component
 class ImageProcessor {

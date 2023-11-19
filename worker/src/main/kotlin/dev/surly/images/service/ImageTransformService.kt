@@ -51,12 +51,5 @@ class ImageTransformService(
         )
         val transformedImageDb = imageService.saveImage(transformedImage)
         log.info("TRFM: saved transformed image to db: $transformedImageDb")
-
-        // TODO create batch record in db
-
-        // TODO create operation records in db
-
-        // TODO save transform image to db
-
     }
 }
