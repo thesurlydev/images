@@ -14,7 +14,6 @@ class ImageService(
     val operationRepository: OperationRepository
 ) {
     suspend fun findById(id: UUID): Image? = imageRepository.findById(id)
-    suspend fun findAll(): Flow<Image> = imageRepository.findAll()
     suspend fun findByUser(uuid: UUID): Flow<Image> = imageRepository.findByUserId(uuid)
     suspend fun saveImage(image: Image): Image = imageRepository.save(image)
     suspend fun findAllOperations(): Flow<Operation> = operationRepository.findAll()

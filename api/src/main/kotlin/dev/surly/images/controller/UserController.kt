@@ -1,5 +1,6 @@
 package dev.surly.images.controller
 
+import dev.surly.images.config.AuthConfig
 import dev.surly.images.model.User
 import dev.surly.images.service.UserService
 import kotlinx.coroutines.flow.Flow
@@ -10,30 +11,16 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
-@RequestMapping("/api/users")
-class UserController(private val userService: UserService) {
+@RequestMapping("/api")
+class UserController(
+    private val userService: UserService,
+    val authConfig: AuthConfig,
+) {
 
-    @GetMapping
-    suspend fun getAllUsers(): ResponseEntity<Flow<User>> {
-        val users = userService.findAll()
-        return ResponseEntity.ok(users)
-    }
-
-    @GetMapping("/{id}")
-    suspend fun getUserById(@PathVariable id: UUID): ResponseEntity<User> {
-        val user = userService.findById(id)
+    @GetMapping("/whoami")
+    suspend fun getUserById(): ResponseEntity<User> {
+        val user = userService.findById(authConfig.testUserId)
         return if (user != null) ResponseEntity.ok(user)
         else ResponseEntity.notFound().build()
     }
-
-    /**
-     * NOTE: Normally, we would use a @ControllerAdvice class to handle exceptions but this is a small app and probably overkill.
-     */
-    /*@ExceptionHandler(
-        MethodArgumentTypeMismatchException::class,
-        IllegalArgumentException::class
-    )
-    suspend fun handleValidationExceptions(ex: Throwable): ResponseStatusException {
-        return ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, ex.message, ex)
-    }*/
 }

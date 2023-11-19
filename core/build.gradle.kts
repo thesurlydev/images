@@ -45,6 +45,13 @@ dependencies {
 	api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	api("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
 	api("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.testcontainers:r2dbc")
 }
 
 tasks.withType<KotlinCompile> {
