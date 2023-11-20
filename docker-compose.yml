@@ -12,8 +12,8 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - nats
-      - postgres
+      - broker
+      - db
       - worker
   worker:
     build:
@@ -28,9 +28,9 @@ services:
     ports:
       - 8081:8081
     depends_on:
-      - nats
-      - postgres
-  nats:
+      - broker
+      - db
+  broker:
     image: nats:latest
     container_name: images-nats
     hostname: nats
@@ -41,7 +41,7 @@ services:
       - "6222:6222"
       - "8222:8222"
     restart: always
-  postgres:
+  db:
     image: postgres:15.0-alpine
     container_name: images-postgres
     hostname: postgres

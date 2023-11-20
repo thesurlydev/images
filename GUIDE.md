@@ -2,6 +2,10 @@
 
 The intent of this document is to provide a high-level overview and guide the user through the application.
 
+For requirements to build and run the application, see [CONTIBUTING.md](CONTRIBUTING.md).
+
+Note: For testing the image upload endpoint, there's some test images available in this repo under `etc/test-images`.
+
 * [Unprotected Endpoints](#unprotected-endpoints)
     + [Health check](#health-check)
     + [Accepted Mime Types](#accepted-mime-types)
