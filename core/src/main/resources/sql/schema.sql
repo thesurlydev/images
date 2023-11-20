@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS operations
     name        text                                              NOT NULL,
     description text                                              NOT NULL
 );
-
+/*
 CREATE TABLE IF NOT EXISTS image_operations
 (
     id               uuid unique primary key  DEFAULT gen_random_uuid() NOT NULL,
@@ -60,4 +60,4 @@ CREATE TABLE IF NOT EXISTS operation_batches
     id               uuid unique primary key  DEFAULT gen_random_uuid() NOT NULL,
     status           text                                               NOT NULL,
     create_timestamp timestamp with time zone DEFAULT now()             NOT NULL
-);
+);*/
