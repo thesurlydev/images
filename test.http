@@ -1,13 +1,29 @@
 ### Health
 GET {{base_url}}/actuator/health
 
+### Accepted mime types
+GET {{base_url}}/api/images/accepted-mime-types
+
+### Image Operations
+GET {{base_url}}/api/operations
+
+### Register
+POST {{base_url}}/register
+Content-Type: application/json
+
+{
+  "username": "shane",
+  "password": "shane",
+  "email": "shane@surly.dev"
+}
+
 ### Login
 POST {{base_url}}/login
 Content-Type: application/json
 
 {
-  "username": "test",
-  "password": "password"
+  "username": "shane",
+  "password": "shane"
 }
 
 > {% client.global.set("auth_token", response.body.token); %}
@@ -15,20 +31,6 @@ Content-Type: application/json
 ### Who am I?
 GET {{base_url}}/whoami
 Authorization: Bearer {{auth_token}}
-
-### Images
-GET {{base_url}}/api/images
-Authorization: Bearer {{auth_token}}
-
-### Logs
-GET {{base_url}}/api/logs
-Authorization: Bearer {{auth_token}}
-
-### Accepted mime types
-GET {{base_url}}/api/images/accepted-mime-types
-
-### Image Operations
-GET {{base_url}}/api/operations
 
 ### Upload valid image
 POST {{base_url}}/api/images/upload
@@ -49,8 +51,15 @@ GET {{base_url}}/api/images/{{image_id}}
 Authorization: Bearer {{auth_token}}
 
 ### Download image
-#@image_id = 92099701-604a-4048-9325-107bf44dc463
 GET {{base_url}}/api/images/{{image_id}}/download
+Authorization: Bearer {{auth_token}}
+
+### Images
+GET {{base_url}}/api/images
+Authorization: Bearer {{auth_token}}
+
+### Logs
+GET {{base_url}}/api/logs
 Authorization: Bearer {{auth_token}}
 
 ### Upload invalid image

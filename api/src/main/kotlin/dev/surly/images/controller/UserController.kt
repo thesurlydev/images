@@ -1,13 +1,11 @@
 package dev.surly.images.controller
 
 import dev.surly.images.config.AuthConfig
-import dev.surly.images.model.AuthenticatedUser
-import dev.surly.images.model.LoginRequest
-import dev.surly.images.model.User
-import dev.surly.images.model.WhoAmIResponse
+import dev.surly.images.model.*
 import dev.surly.images.service.TokenService
 import dev.surly.images.service.UserService
 import dev.surly.images.util.SecurityUtils.Companion.verifyPassword
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -22,6 +20,9 @@ class UserController(
     private val tokenService: TokenService,
     val authConfig: AuthConfig,
 ) {
+    companion object {
+        private val log = org.slf4j.LoggerFactory.getLogger(UserController::class.java)
+    }
 
     @GetMapping("/whoami")
     suspend fun getUserById(exchange: ServerWebExchange): ResponseEntity<WhoAmIResponse> {
@@ -37,9 +38,6 @@ class UserController(
         }
     }
 
-    fun User.toWhoAmIResponse(): WhoAmIResponse =
-        WhoAmIResponse(this.id, this.username, this.email)
-
     @PostMapping("/login")
     suspend fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<Any> {
         val user = userService.findByUsername(loginRequest.username)
@@ -49,7 +47,7 @@ class UserController(
                 when {
                     verified -> {
                         val decodedSecretKey = Base64.getDecoder().decode(authConfig.secretKey)
-                        val token = tokenService.createJwtToken(user.id, decodedSecretKey)
+                        val token = tokenService.createJwtToken(user.id!!, decodedSecretKey)
                         val authUser = AuthenticatedUser(user, token)
                         ResponseEntity.ok(authUser)
                     }
@@ -63,4 +61,36 @@ class UserController(
             else -> ResponseEntity.notFound().build()
         }
     }
+
+
+    @PostMapping("/register")
+    suspend fun login(@RequestBody registrationRequest: RegistrationRequest): ResponseEntity<Any> {
+        try {
+            val user = registrationRequest.toUser()
+            val createdUser = userService.create(user)
+            return createdUser.toWhoAmIResponse().let { whoAmIResponse ->
+                ResponseEntity.status(HttpStatus.CREATED).body(whoAmIResponse)
+            }
+        } catch (dke: DuplicateKeyException) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(
+                    mapOf(
+                        "status" to "Conflict",
+                        "message" to "Username or email already exists"
+                    )
+                )
+        } catch (e: Exception) {
+            log.error("Error creating user", e)
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                    mapOf(
+                        "status" to "Error",
+                        "message" to "Internal Server Error"
+                    )
+                )
+        }
+    }
 }
+
