@@ -7,5 +7,6 @@ data class AuthConfig(
     val secretKey: String,
     val logRequests: Boolean,
     val enabled: Boolean,
-    val excludedPaths: Set<String>
+    val excludedPaths: Set<String>,
+    val tokenExpiry: Long,
 )

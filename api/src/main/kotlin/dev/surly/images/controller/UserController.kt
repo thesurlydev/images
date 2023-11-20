@@ -5,8 +5,8 @@ import dev.surly.images.model.AuthenticatedUser
 import dev.surly.images.model.LoginRequest
 import dev.surly.images.model.User
 import dev.surly.images.model.WhoAmIResponse
+import dev.surly.images.service.TokenService
 import dev.surly.images.service.UserService
-import dev.surly.images.util.SecurityUtils.Companion.createJwtToken
 import dev.surly.images.util.SecurityUtils.Companion.verifyPassword
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,6 +19,7 @@ import java.util.*
 @RequestMapping()
 class UserController(
     private val userService: UserService,
+    private val tokenService: TokenService,
     val authConfig: AuthConfig,
 ) {
 
@@ -31,6 +32,7 @@ class UserController(
                 val whoAmIResponse = user.toWhoAmIResponse()
                 ResponseEntity.ok(whoAmIResponse)
             }
+
             else -> ResponseEntity.notFound().build()
         }
     }
@@ -47,7 +49,7 @@ class UserController(
                 when {
                     verified -> {
                         val decodedSecretKey = Base64.getDecoder().decode(authConfig.secretKey)
-                        val token = createJwtToken(user.id, decodedSecretKey)
+                        val token = tokenService.createJwtToken(user.id, decodedSecretKey)
                         val authUser = AuthenticatedUser(user, token)
                         ResponseEntity.ok(authUser)
                     }

@@ -21,7 +21,7 @@ class ImageTransformService(
         log.info("TRFM: received transform request: $req")
 
         // load image from database
-        val imageDb = imageService.findById(req.imageId)
+        val imageDb = imageService.findByUserIdAndId(req.userId, req.imageId)
         log.info("TRFM: db image: ${imageDb.toString()}")
 
         // load image from storage

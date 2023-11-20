@@ -1,7 +1,7 @@
 package dev.surly.images.security
 
 import dev.surly.images.config.AuthConfig
-import dev.surly.images.util.SecurityUtils.Companion.verifyToken
+import dev.surly.images.service.TokenService
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.reactor.mono
 import org.springframework.http.HttpStatus
@@ -14,7 +14,10 @@ import java.util.*
 
 
 @Component
-class TokenAuthenticationFilter(val authConfig: AuthConfig) : WebFilter {
+class TokenAuthenticationFilter(
+    val authConfig: AuthConfig,
+    val tokenService: TokenService
+) : WebFilter {
 
     companion object {
         private val log = org.slf4j.LoggerFactory.getLogger(TokenAuthenticationFilter::class.java)
@@ -60,7 +63,7 @@ class TokenAuthenticationFilter(val authConfig: AuthConfig) : WebFilter {
 
         return mono {
             val secretKey = Base64.getDecoder().decode(authConfig.secretKey)
-            val verificationResult = verifyToken(token, secretKey)
+            val verificationResult = tokenService.verifyToken(token, secretKey)
             if (verificationResult.isValid) {
                 // store username for downstream processing
                 exchange.attributes["userId"] = verificationResult.userId

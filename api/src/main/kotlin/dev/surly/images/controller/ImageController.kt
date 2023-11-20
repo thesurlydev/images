@@ -104,9 +104,9 @@ class ImageController(
         log.info("Saved image to db: $savedImage")
 
         // publish an event to the message broker to perform the image processing
-        val req = savedImage?.id?.let {
+        val req = savedImage?.id?.let { imageId ->
             ImageTransformRequest(
-                it, listOf(
+                imageId, userId, listOf(
                     ScaleImageTransform(1280, 720),
                     RotateImageTransform(180.0)
                 )
@@ -115,7 +115,7 @@ class ImageController(
         val reqBytes = jackson.writeValueAsBytes(req)
         publisher.publish(messagingConfig.transformSubject, reqBytes)
 
-        auditLogService.logSuccess(userId!!, "upload", "Uploaded image: ${savedImage?.id}")
+        auditLogService.logSuccess(userId, "upload", "Uploaded image: ${savedImage?.id}")
 
         return ResponseEntity.ok(savedImage)
     }

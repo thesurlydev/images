@@ -18,44 +18,6 @@ class SecurityUtils {
             return result.verified
         }
 
-        fun createJwtToken(userId: UUID, secretKey: ByteArray): String {
-            val nowMillis = System.currentTimeMillis()
-            val now = Date(nowMillis)
-            val expMillis = nowMillis + 3600000 // The token expiration time, here set to one hour
-            val exp = Date(expMillis)
-            val key = Keys.hmacShaKeyFor(secretKey)
-
-            return Jwts.builder()
-                .subject(userId.toString())
-                .issuedAt(now)
-                .expiration(exp)
-                .signWith(key)
-                .compact()
-        }
-
-        fun verifyToken(token: String?, secretKey: ByteArray): VerifyTokenResult {
-            if (token.isNullOrEmpty()) return VerifyTokenResult(false)
-
-            // create key from base64 encoded secret key in the config
-            val key = Keys.hmacShaKeyFor(secretKey)
-
-            return try {
-                // parse the token. if it fails, it will throw an exception, and we'll return false
-                // note that this will also fail if the token is expired
-                val claims = Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseClaimsJws(token)
-
-                val subject = claims.payload.subject
-                VerifyTokenResult(true, UUID.fromString(subject))
-
-            } catch (e: Exception) {
-                log.error("Error verifying token: ${e.message}", e)
-                VerifyTokenResult(false)
-            }
-        }
-
         fun generateHmacShaKey(): SecretKey {
             val keyGen = KeyGenerator.getInstance("HmacSHA256")
             keyGen.init(256) // Initialize with a key size of 256 bits (32 bytes)
