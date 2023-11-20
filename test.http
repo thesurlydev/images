@@ -46,7 +46,6 @@ Content-Disposition: form-data; name="file"; filename="test1-2016x1512-360k.jpg"
 > {% client.global.set("image_id", response.body.id); %}
 
 ### Image by id
-#@image_id = a96c3347-d804-4d86-bfb9-ba87a8e8038b
 GET {{base_url}}/api/images/{{image_id}}
 Authorization: Bearer {{auth_token}}
 
@@ -73,4 +72,11 @@ Content-Disposition: form-data; name="file"; filename="brain-1552824775.svg"
 < ./etc/test-images/brain-1552824775.svg
 
 ### Upload a non-image file
+POST {{base_url}}/api/images/upload
+Authorization: Bearer {{auth_token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="invalid.txt"
+
+< ./etc/invalid-test-files/invalid.txt
