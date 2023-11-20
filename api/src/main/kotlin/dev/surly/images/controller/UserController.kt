@@ -24,6 +24,9 @@ class UserController(
         private val log = org.slf4j.LoggerFactory.getLogger(UserController::class.java)
     }
 
+    /**
+     * Get information about the currently logged in user.
+     */
     @GetMapping("/whoami")
     suspend fun getUserById(exchange: ServerWebExchange): ResponseEntity<WhoAmIResponse> {
         val userId = exchange.getAttribute<UUID>("userId")!!
@@ -38,6 +41,9 @@ class UserController(
         }
     }
 
+    /**
+     * Login a registered user
+     */
     @PostMapping("/login")
     suspend fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<Any> {
         val user = userService.findByUsername(loginRequest.username)
@@ -63,6 +69,9 @@ class UserController(
     }
 
 
+    /**
+     * Register a new user
+     */
     @PostMapping("/register")
     suspend fun login(@RequestBody registrationRequest: RegistrationRequest): ResponseEntity<Any> {
         try {
