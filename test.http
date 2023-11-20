@@ -5,7 +5,7 @@ GET {{base_url}}/actuator/health
 GET {{base_url}}/api/images/accepted-mime-types
 
 ### Image Operations
-GET {{base_url}}/api/operations
+GET {{base_url}}/api/images/operations
 
 ### Register
 POST {{base_url}}/register

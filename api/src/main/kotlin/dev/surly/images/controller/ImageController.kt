@@ -35,6 +35,24 @@ class ImageController(
         private val log = LoggerFactory.getLogger(ImageController::class.java)
     }
 
+    @GetMapping
+    suspend fun getImages(exchange: ServerWebExchange): ResponseEntity<Flow<Image>> {
+        val userId = exchange.getAttribute<UUID>("userId")!!
+        val images = imageService.findByUserId(userId)
+        return ResponseEntity.ok(images)
+    }
+
+    @GetMapping("/{id}")
+    suspend fun getImageById(
+        exchange: ServerWebExchange,
+        @PathVariable id: UUID
+    ): ResponseEntity<Image> {
+        val userId = exchange.getAttribute<UUID>("userId")!!
+        val image = imageService.findByUserIdAndId(userId, id)
+        return if (image != null) ResponseEntity.ok(image)
+        else ResponseEntity.notFound().build()
+    }
+
     @GetMapping("/{id}/download")
     suspend fun downloadImage(
         exchange: ServerWebExchange,
@@ -127,21 +145,9 @@ class ImageController(
         return ResponseEntity.ok(acceptedTypes)
     }
 
-    @GetMapping
-    suspend fun getImages(exchange: ServerWebExchange): ResponseEntity<Flow<Image>> {
-        val userId = exchange.getAttribute<UUID>("userId")!!
-        val images = imageService.findByUserId(userId)
-        return ResponseEntity.ok(images)
-    }
-
-    @GetMapping("/{id}")
-    suspend fun getImageById(
-        exchange: ServerWebExchange,
-        @PathVariable id: UUID
-    ): ResponseEntity<Image> {
-        val userId = exchange.getAttribute<UUID>("userId")!!
-        val image = imageService.findByUserIdAndId(userId, id)
-        return if (image != null) ResponseEntity.ok(image)
-        else ResponseEntity.notFound().build()
+    @GetMapping("/operations")
+    suspend fun operations(): ResponseEntity<Flow<Operation>> {
+        val ops = imageService.findAllOperations();
+        return ResponseEntity.ok(ops);
     }
 }
