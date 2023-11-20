@@ -26,5 +26,5 @@ class AuditLogService(val auditLogRepository: AuditLogRepository) {
         ).let { auditLogRepository.save(it) }
     }
 
-    suspend fun findByUser(userId: UUID): Flow<AuditLog> = auditLogRepository.findByUserId(userId)
+    suspend fun findByUserId(userId: UUID): Flow<AuditLog> = auditLogRepository.findByUserId(userId)
 }

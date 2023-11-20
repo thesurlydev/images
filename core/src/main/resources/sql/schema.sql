@@ -3,9 +3,10 @@ drop table if exists users cascade;
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id       uuid unique primary key DEFAULT gen_random_uuid() NOT NULL,
-    username VARCHAR(20)                                       NOT NULL,
-    email    VARCHAR(64)                                       NOT NULL,
+    id            uuid unique primary key DEFAULT gen_random_uuid() NOT NULL,
+    username      VARCHAR(20)                                       NOT NULL,
+    email         VARCHAR(64)                                       NOT NULL,
+    password_hash VARCHAR(128)                                      NOT NULL,
     CONSTRAINT unique_user UNIQUE (username, email)
 );
 

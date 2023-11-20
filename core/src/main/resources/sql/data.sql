@@ -1,5 +1,5 @@
 DELETE FROM users;
-INSERT INTO users (id, username, email) VALUES ('1aeabbac-84a5-11ee-9c3b-37b635df60b6', 'test', 'user@test.com') ON CONFLICT DO NOTHING;
+INSERT INTO users (id, username, password_hash, email) VALUES ('1aeabbac-84a5-11ee-9c3b-37b635df60b6', 'test', '$2a$12$ttLKibWbEpxB4Ed9/RQg1e1IwzHhZl1a8w.Qd5vwC9pCRDSrTFePu', 'user@test.com') ON CONFLICT DO NOTHING;
 -- DELETE FROM images;
 -- INSERT INTO images (id, user_id, path, status, type, file_size) VALUES ('32084e30-84a5-11ee-aed1-2b32021344f3', '1aeabbac-84a5-11ee-9c3b-37b635df60b6', 'test.png', 'processing', 'image/png', '1024') ON CONFLICT DO NOTHING;
 DELETE FROM operations;

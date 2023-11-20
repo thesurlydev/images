@@ -1,7 +1,11 @@
 package dev.surly.images.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import java.util.UUID
 
 @ConfigurationProperties(prefix = "auth")
-data class AuthConfig(val testUserId: UUID)
+data class AuthConfig(
+    val secretKey: String,
+    val logRequests: Boolean,
+    val enabled: Boolean,
+    val excludedPaths: Set<String>
+)

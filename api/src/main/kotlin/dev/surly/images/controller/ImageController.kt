@@ -1,7 +1,6 @@
 package dev.surly.images.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.surly.images.config.AuthConfig
 import dev.surly.images.config.ImageConfig
 import dev.surly.images.config.MessagingConfig
 import dev.surly.images.messaging.Publisher
@@ -15,16 +14,15 @@ import dev.surly.images.util.FilePartExtensions.toImage
 import kotlinx.coroutines.flow.Flow
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ServerWebExchange
 import java.util.*
 
 @RestController
 @RequestMapping("/api/images")
 class ImageController(
-    val authConfig: AuthConfig,
     val messagingConfig: MessagingConfig,
     val imageService: ImageService,
     val imagesConfig: ImageConfig,
@@ -38,11 +36,15 @@ class ImageController(
     }
 
     @GetMapping("/{id}/download")
-    suspend fun downloadImage(@PathVariable id: UUID): ResponseEntity<Any> {
-        when (val image = imageService.findById(id)) {
+    suspend fun downloadImage(
+        exchange: ServerWebExchange,
+        @PathVariable id: UUID
+    ): ResponseEntity<Any> {
+        val userId = exchange.getAttribute<UUID>("userId")!!
+        when (val image = imageService.findByUserIdAndId(userId, id)) {
             null -> {
                 val msg = "Image not found: $id"
-                auditLogService.logError(authConfig.testUserId, "download", msg)
+                auditLogService.logError(userId, "download", msg)
                 val notFoundBody = mapOf(
                     "status" to "Not found",
                     "message" to msg
@@ -55,21 +57,24 @@ class ImageController(
                 val headers = HttpHeaders()
                 headers.add("Content-Type", image.type)
                 headers.add("Content-Disposition", "attachment; filename=${image.path}")
-                auditLogService.logSuccess(authConfig.testUserId, "download", "Downloaded image: $id")
+                auditLogService.logSuccess(userId, "download", "Downloaded image: $id")
                 return ResponseEntity.ok().headers(headers).body(bytes)
             }
         }
     }
 
     @PostMapping("/upload")
-    suspend fun uploadImage(@RequestPart("file") filePart: FilePart): ResponseEntity<Any> {
-
+    suspend fun uploadImage(
+        exchange: ServerWebExchange,
+        @RequestPart("file") filePart: FilePart
+    ): ResponseEntity<Any> {
+        val userId = exchange.getAttribute<UUID>("userId")!!
         // verify that the file is an image
         val mimeTypeValidationResult = filePart.isValidMimeType(imagesConfig.allowedMimeTypes)
         val detectedMimeType = mimeTypeValidationResult.mimeType
         if (!mimeTypeValidationResult.isValid) {
             val msg = "File is not an accepted type: $detectedMimeType"
-            auditLogService.logError(authConfig.testUserId, "upload", msg)
+            auditLogService.logError(userId, "upload", msg)
             return ResponseEntity.badRequest().body(mapOf("status" to "Bad request", "message" to msg))
         }
 
@@ -78,9 +83,6 @@ class ImageController(
         val extension = detectedMimeType?.split("/")?.get(1)
         val saveResult = extension?.let { storageService.saveImage(bytes, it) }
         log.info("Saved image to '${storageService.getType()}' storage: $saveResult")
-
-        // FIXME capture actual user id after authentication is implemented
-        val userId = authConfig.testUserId
 
         // save the image to the database
         val originalImageName = filePart.filename()
@@ -113,29 +115,32 @@ class ImageController(
         val reqBytes = jackson.writeValueAsBytes(req)
         publisher.publish(messagingConfig.transformSubject, reqBytes)
 
-        auditLogService.logSuccess(userId, "upload", "Uploaded image: ${savedImage?.id}")
+        auditLogService.logSuccess(userId!!, "upload", "Uploaded image: ${savedImage?.id}")
 
         return ResponseEntity.ok(savedImage)
     }
 
-    @GetMapping("/accepted")
-    suspend fun getAcceptedImageTypes(): ResponseEntity<AcceptedMimeTypes> {
+    @GetMapping("/accepted-mime-types")
+    suspend fun getAcceptedMimeTypes(): ResponseEntity<AcceptedMimeTypes> {
         val allowedMimeTypes = imagesConfig.allowedMimeTypes
         val acceptedTypes = AcceptedMimeTypes(allowedMimeTypes)
         return ResponseEntity.ok(acceptedTypes)
     }
 
     @GetMapping
-    suspend fun getImages(): ResponseEntity<Flow<Image>> {
-        // FIXME capture actual user id after authentication is implemented
-        val userId = authConfig.testUserId
-        val images = imageService.findByUser(userId)
+    suspend fun getImages(exchange: ServerWebExchange): ResponseEntity<Flow<Image>> {
+        val userId = exchange.getAttribute<UUID>("userId")!!
+        val images = imageService.findByUserId(userId)
         return ResponseEntity.ok(images)
     }
 
     @GetMapping("/{id}")
-    suspend fun getImageById(@PathVariable id: UUID): ResponseEntity<Image> {
-        val image = imageService.findById(id)
+    suspend fun getImageById(
+        exchange: ServerWebExchange,
+        @PathVariable id: UUID
+    ): ResponseEntity<Image> {
+        val userId = exchange.getAttribute<UUID>("userId")!!
+        val image = imageService.findByUserIdAndId(userId, id)
         return if (image != null) ResponseEntity.ok(image)
         else ResponseEntity.notFound().build()
     }

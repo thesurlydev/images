@@ -1,6 +1,6 @@
 # images
 
-A distributed async image processing service.
+A distributed asynchronous image processing service.
 
 ## Highlighted Features
 
@@ -11,11 +11,12 @@ A distributed async image processing service.
 * Authentication via JWT.
 * All components are containerized and can be run locally for a great developer experience.
 
+Note: There's some test images available in this repo under `etc/test-images`.
+
 ## Forward Looking Statements
 
 1. **Blob Storage** - The project supports easily adding multiple storage implementations. The current implementation
-   uses the file system
-   for simplicity. A more robust implementation would use a cloud storage provider such as AWS S3 for durability and
+   uses the file system for simplicity. A more robust implementation would use a cloud storage provider such as AWS S3 for durability and
    subsequently AWS CloudFront as a CDN.
 2. **Supported Image Types** - Additional image types can be supported by leveraging libraries such as Apache Batik to
    support SVG.
@@ -40,7 +41,7 @@ These are the requirements for running the project locally:
 
 ![Component Diagram](etc/assets/arch-diagram.svg)
 
-- **api** - async REST API server which serves as the entry point for the system. (Spring Boot w/Kotlin)
+- **api** - async REST API server which serves as the entry point for the system. (Spring Boot w/Kotlin coroutines)
 - **blob storage** - storage for images. (File system, S3, etc.)
 - **core** - library which contains shared code between the `api` and `worker`. (Kotlin)
 - **db** - relational database which stores image metadata. (PostgreSQL)

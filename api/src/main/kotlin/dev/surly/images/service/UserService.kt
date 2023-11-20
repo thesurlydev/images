@@ -9,5 +9,6 @@ import java.util.UUID
 @Service
 class UserService(val userRepository: UserRepository) {
     suspend fun findById(id: UUID): User? = userRepository.findById(id)
+    suspend fun findByUsername(username: String): User? = userRepository.findByUsername(username)
     suspend fun findAll(): Flow<User> = userRepository.findAll()
 }

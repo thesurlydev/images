@@ -9,5 +9,6 @@ import java.util.*
 data class User(
     @Id val id: UUID,
     @Column("username") val username: String,
+    @Column("password_hash") val passwordHash: String,
     @Column("email") val email: String,
 )
