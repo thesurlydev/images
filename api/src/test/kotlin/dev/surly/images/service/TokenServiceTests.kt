@@ -1,5 +1,6 @@
 package dev.surly.images.service
 
+import dev.surly.images.AbstractContainerBaseTest
 import dev.surly.images.model.VerifyTokenResult
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
@@ -8,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import java.util.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TokenServiceTests {
+class TokenServiceTests : AbstractContainerBaseTest() {
 
     @Autowired private lateinit var tokenService: TokenService
 

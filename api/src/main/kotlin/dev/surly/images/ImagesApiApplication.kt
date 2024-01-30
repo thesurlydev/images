@@ -8,8 +8,12 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan("dev.surly.images.config")
-class ImagesApiApplication
-
-fun main(args: Array<String>) {
-    runApplication<ImagesApiApplication>(*args)
+class ImagesApiApplication {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runApplication<ImagesApiApplication>(*args)
+        }
+    }
 }
+
