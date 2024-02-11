@@ -12,7 +12,7 @@ POST {{base_url}}/register
 Content-Type: application/json
 
 {
-  "username": "shane",
+  "username": "shane3",
   "password": "shane",
   "email": "shane@surly.dev"
 }

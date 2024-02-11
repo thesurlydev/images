@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.1.5"
-	id("io.spring.dependency-management") version "1.1.3"
-	kotlin("jvm") version "1.8.22"
-	kotlin("plugin.spring") version "1.8.22"
+	id("org.springframework.boot") version "3.2.2"
+	id("io.spring.dependency-management") version "1.1.1"
+	kotlin("jvm") version "1.9.22"
+	kotlin("plugin.spring") version "1.9.22"
 }
 
 group = "dev.surly"
@@ -43,6 +43,14 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:r2dbc")
+
+	// micrometer and otel
+	implementation("io.micrometer:micrometer-registry-prometheus")
+//	implementation("io.opentelemetry:opentelemetry-api:1.34.1")
+//	implementation("io.opentelemetry:opentelemetry-sdk:1.34.1")
+//	implementation("io.opentelemetry:opentelemetry-exporter-otlp:1.34.1")
+//	implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:")
+//	implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:1.32.1-alpha")
 }
 
 tasks.withType<KotlinCompile> {
@@ -53,7 +61,7 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
-	springBoot.mainClass.set("dev.surly.images.ImagesApiApplicationKt")
+	springBoot.mainClass.set("dev.surly.images.ImagesApiApplication")
 }
 
 tasks.withType<Test> {
